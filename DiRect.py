@@ -70,7 +70,8 @@ class DiRect(object):
             self.n_feval += 1
             if new_fval_u < self.curr_opt:
                 self.curr_opt = new_fval_u
-                self.x_at_opt = new_center_u
+                self.x_at_opt_unit = new_center_u.copy()
+                self.x_at_opt = self.u2r(self.x_at_opt_unit)
             if self.n_feval > self.max_feval:
                 self.TERMINATE = True
                 return
@@ -83,7 +84,8 @@ class DiRect(object):
             self.n_feval += 1
             if new_fval_l < self.curr_opt:
                 self.curr_opt = new_fval_l
-                self.x_at_opt = new_center_l
+                self.x_at_opt = new_center_l.copy()
+                self.x_at_opt = self.u2r(self.x_at_opt_unit)
             if self.n_feval > self.max_feval:
                 self.TERMINATE = True
                 return
@@ -149,7 +151,8 @@ class DiRect(object):
         self.l_hist.append((self.u2r(c), f_val))
         self.n_feval += 1
         self.curr_opt = f_val
-        self.x_at_opt = c
+        self.x_at_opt_unit = c
+        self.x_at_opt = self.u2r(c)
         self.TERMINATE = False
         
         for i in xrange(self.max_iter):            
