@@ -23,6 +23,7 @@ class DiRect(object):
         
         self.curr_opt = np.inf
         self.x_at_opt = None
+        self.x_at_opt_unit = None
         self.n_feval = 0
         self.n_iter = 0
         self.n_rectdiv = 0
@@ -126,6 +127,7 @@ class DiRect(object):
             self.d_rect.pop(dd)
 
     def get_potentially_optimal_rects(self):
+        # among rects with the same size, choose the one with the smallest function value
         border = [(key, l[0].f_val) for key, l in self.d_rect.items()]
         border = sorted(border, key=lambda t:t[0])
         
@@ -148,7 +150,7 @@ class DiRect(object):
         rect = Rectangle(c, f_val, s)
         
         self.d_rect[rect.d2] = [rect]
-        self.l_hist.append((self.u2r(c), f_val))
+        self.l_hist.append((self.u2r(c), self.true_sign(f_val)))
         self.n_feval += 1
         self.curr_opt = f_val
         self.x_at_opt_unit = c
